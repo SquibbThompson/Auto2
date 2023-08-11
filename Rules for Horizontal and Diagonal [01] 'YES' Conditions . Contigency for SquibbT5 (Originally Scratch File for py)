@@ -1,0 +1,104 @@
+#####################
+#Horizontal 09 Rules
+
+# loop over each cell in the matrix
+
+
+
+    for i in range(height):
+        for j in range(width):
+        # check the number of black cells surrounding the current cell
+            n_1 = 0
+            for x in range(i - 1, i + 2):
+                for y in range(j - 1, j + 2):
+                    if (x, y) != (i, j) and x >= 0 and y >= 0 and x < height and y < width:
+                        if matrix[x, y] == 1:
+                            n_1 += 1
+
+        # invert the cell color if a white cell borders 2 black cells
+        if matrix[i, j] == 0 and n_1 == 2:
+            updated_matrix[i, j] = 1
+        elif matrix[i, j] == 1 and n_1 % 2 == 1:
+            # turn two horizontal/vertical black cells to white
+            if i > 0 and matrix[i - 1, j] == 1:
+                updated_matrix[i - 1, j] = 0
+            if j > 0 and matrix[i, j - 1] == 1:
+                updated_matrix[i, j - 1] = 0
+            if i < height - 1 and matrix[i + 1, j] == 1:
+                updated_matrix[i + 1, j] = 0
+            if j < width - 1 and matrix[i, j + 1] == 1:
+                updated_matrix[i, j + 1] = 0
+    return updated_matrix
+
+# generate initial state
+initial_state = np.array(string_to_bin_matrix(binary_string))
+
+
+#########################
+# Diagonal 09 Rules
+
+# loop over each cell in the matrix
+for i in range(height):
+    for j in range(width):
+        # check the number of black cells surrounding the current cell
+        n_black = 0
+        for x in range(i - 1, i + 2):
+            for y in range(j - 1, j + 2):
+                if (x, y) != (i, j) and x >= 0 and y >= 0 and x < height and y < width:
+                    if matrix[x, y] == 1:
+                        n_black += 1
+
+        # invert the cell color if a white cell borders 2 black cells
+        if matrix[i, j] == 0 and n_black == 2:
+            updated_matrix[i, j] = 1
+        elif matrix[i, j] == 1 and n_black % 2 == 1:
+            # turn two diagonal black cells to white
+            if i > 0 and j > 0 and matrix[i - 1, j - 1] == 1:
+                updated_matrix[i - 1, j - 1] = 0
+            if i > 0 and j < width - 1 and matrix[i - 1, j + 1] == 1:
+                updated_matrix[i - 1, j + 1] = 0
+            if i < height - 1 and j > 0 and matrix[i + 1, j - 1] == 1:
+                updated_matrix[i + 1, j - 1] = 0
+            if i < height - 1 and j < width - 1 and matrix[i + 1, j + 1] == 1:
+                updated_matrix[i + 1, j + 1] = 0
+
+return updated_matrix
+
+
+
+###############################
+#Horizontal Vert For f(n)=2n
+
+
+# generate initial state
+initial_state = np.array(string_to_bin_matrix(binary_string))
+
+def update_matrix(matrix):
+    updated_matrix = matrix.copy()
+    height, width = matrix.shape
+
+    # loop over each cell in the matrix
+    for i in range(height):
+        for j in range(width):
+            # check the number of black cells surrounding the current cell
+            n_1 = 0
+            for x in range(i - 1, i + 2):
+                for y in range(j - 1, j + 2):
+                    if (x, y) != (i, j) and x >= 0 and y >= 0 and x < height and y < width:
+                        if matrix[x, y] == 1:
+                            n_1 += 1
+
+            # invert the cell color if a white cell borders an even number of black cells
+            if matrix[i, j] == 0 and n_1 % 2 == 0 and n_1 != 0:
+                updated_matrix[i, j] = 1
+            elif matrix[i, j] == 1 and n_1 % 2 == 1:
+                # turn two horizontal/vertical black cells to white
+                if i > 0 and matrix[i - 1, j] == 1:
+                    updated_matrix[i - 1, j] = 0
+                if j > 0 and matrix[i, j - 1] == 1:
+                    updated_matrix[i, j - 1] = 0
+                if i < height - 1 and matrix[i + 1, j] == 1:
+                    updated_matrix[i + 1, j] = 0
+                if j < width - 1 and matrix[i, j + 1] == 1:
+                    updated_matrix[i, j + 1] = 0
+    return updated_matrix
